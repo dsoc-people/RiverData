@@ -33,16 +33,24 @@ station_data_string = """site_no station_nm      lat     lon
 03211500        JOHNS CREEK NEAR VAN LEAR, KY   37.74370748     -82.72404689
 03212500        LEVISA FORK AT PAINTSVILLE, KY  37.81537197     -82.7915493
 03213700        TUG FORK AT WILLIAMSON, WV      37.67315699     -82.2801408
-"""  # (truncate for brevity if desired — full list supported)
+"""  # (Truncated for demonstration)
 
 # ---------------- Parse the Station Data ----------------
 cleaned = re.sub(r'\s{2,}', '\t', station_data_string.strip())
+
 stations_df = pd.read_csv(
     io.StringIO(cleaned),
     sep='\t',
     names=["site_no", "station_nm", "lat", "lon"],
     engine="python"
 )
+
+# Force numeric conversion for coordinates
+stations_df["lat"] = pd.to_numeric(stations_df["lat"], errors="coerce")
+stations_df["lon"] = pd.to_numeric(stations_df["lon"], errors="coerce")
+
+# Drop any rows missing coordinates
+stations_df = stations_df.dropna(subset=["lat", "lon"]).reset_index(drop=True)
 
 # ---------------- Fetch NOAA NWPS Data ----------------
 @st.cache_data(ttl=600)
@@ -131,7 +139,7 @@ st.markdown(
     f"**Total Stations:** {len(stations_df)} | ✅ Successful: {valid_count} | ⚠️ Failed: {len(stations_df) - valid_count}"
 )
 st.caption(f"Last updated: {time.strftime('%Y-%m-%d %H:%M:%S UTC')}")
-st_map = st_folium(m, width=1000, height=650)
+st_folium(m, width=1000, height=650)
 
 # ---------------- Sidebar: Station Data Viewer ----------------
 st.sidebar.header("📊 Station Data Viewer")
