@@ -27,17 +27,12 @@ station_data_string = """site_no station_nm      lat     lon
 03208000        LEVISA FORK BELOW FISHTRAP DAM NEAR MILLARD, KY 37.42593725     -82.4123701
 03209325        ELKHORN CREEK AT BURDINE, KY    37.1878333      -82.6045694
 03209410        RUSSELL FORK AT CEDARVILLE, KY  37.31295507     -82.3595549
-03209500        LEVISA FORK AT PIKEVILLE, KY    37.4642676      -82.5262632
-03209800        LEVISA FORK AT PRESTONSBURG, KY 37.67093027     -82.7771043
-03210000        JOHNS CREEK NEAR META, KY       37.5670444      -82.45792659
-03211500        JOHNS CREEK NEAR VAN LEAR, KY   37.74370748     -82.72404689
-03212500        LEVISA FORK AT PAINTSVILLE, KY  37.81537197     -82.7915493
-03213700        TUG FORK AT WILLIAMSON, WV      37.67315699     -82.2801408
-"""  # (Truncated for demonstration)
+... (paste your full list down through the final line)
+371144082383401 ELKHORN CREEK AT BARNHILL RD NR DUNHAM, KY      37.19571667     -82.6428778
+"""
 
 # ---------------- Parse the Station Data ----------------
 cleaned = re.sub(r'\s{2,}', '\t', station_data_string.strip())
-
 stations_df = pd.read_csv(
     io.StringIO(cleaned),
     sep='\t',
