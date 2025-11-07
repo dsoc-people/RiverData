@@ -9,6 +9,7 @@ from streamlit_folium import st_folium
 import pandas as pd
 import time
 import plotly.express as px
+import re
 
 # ---------------- Streamlit Setup ----------------
 st.set_page_config(page_title="Kentucky River Gauge Map", layout="wide")
@@ -227,7 +228,7 @@ station_data_string =  """site_no station_nm      lat     lon
 371144082383401 ELKHORN CREEK AT BARNHILL RD NR DUNHAM, KY      37.19571667     -82.6428778
 """ # (You can paste your full dataset here)
 
-stations_df = pd.read_csv(pd.io.common.StringIO(station_data_string), delim_whitespace=True)
+stations_df = pd.read_csv(pd.io.common.StringIO(station_data_string), sep='\s+')
 
 # ---------------- Fetch NOAA NWPS Data ----------------
 @st.cache_data(ttl=600)
